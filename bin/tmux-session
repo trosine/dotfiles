@@ -1,0 +1,6 @@
+#!/bin/sh
+session=${1:-main}
+
+#; tmux
+tmux -u2 attach -t $session || tmux -u2 new-session -s $session
+

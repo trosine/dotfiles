@@ -1,0 +1,24 @@
+[color]
+	ui = true
+[user]
+	name = Tim Rosine
+	email = trosine@conversantmedia.com
+[core]
+  excludesfile = /home/trosine/.gitignore_global
+[log]
+	decorate = short
+	abbrevcommit = true
+[merge]
+	tool = vimdiff
+[mergetool]
+	keepBackup = false
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	ga = log --graph --all
+	lg = log --graph
+	st = status -sb
+[push]
+	default = simple
