@@ -19,16 +19,17 @@ done
 
 # vi-bindings at bash prompt
 set -o vi
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_SHOWSTASHSTATE=1
-export GIT_PS1_SHOWUNTRACKEDFILES=1
-export GIT_PS1_SHOWUPSTREAM="auto"
 
+# Prompt
 export REMOTE_STATUS=1
-# source /usr/share/cs-prompt/csprompt
+export PROMPT_COMMAND='PS1=$($HOME/bin/myprompt)'
 
-# export PS1='$HOSTNAME ${PWD#$HOME/}$ ' # overridden by PROMPT_COMMAND (in csprompt)
-# export PROMPT_COMMAND='PS1=$(~/bin/myprompt)'
+# Git prompt specific settings
+# export GIT_PS1_SHOWDIRTYSTATE=1
+# export GIT_PS1_SHOWSTASHSTATE=1
+# export GIT_PS1_SHOWUNTRACKEDFILES=1
+# export GIT_PS1_SHOWUPSTREAM="auto"
+
 export GREP_OPTIONS='--exclude-dir=.svn'
 export PATH=$PATH:~/bin:.
 export ENSCRIPT='-U2 -T3 -E'

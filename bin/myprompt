@@ -1,0 +1,196 @@
+#!/usr/bin/perl
+#; possible future use of emoji:
+#; ❗️ ❕ ❓ ❔ ‼️ ⁉️ ❎ ✅ ✳️ ❇️ 🌀 ☑️ 🔘 ⚪️ ⚫️ 🔴 🔵 🔸 🔹 🔶 🔷 🔺 ▪️ ▫️ ⬛️ ⬜️ 🔻 ◼️ ◻️ ◾️ ◽️ 🔲 🔳 ♦️ 💬 ⚡️
+#; ✨ 🔥 💥 💧 🌱 🌿 💩 🖕 🎯 🚦 🚥 ⚓️ ☠️ ⛔️ 📛 🚫 ❌ ⭕️ 💢 ♻️v🔰 🔅 🔆 🔱 ⚜ 🌐 ➕ ➖ ➗ ✖️ 💲 
+#; cases:
+use strict;
+use Fcntl ':flock';
+use File::Copy;
+use File::Slurp;
+use POSIX qw(setsid);
+
+my $process_status = $ENV{'REMOTE_STATUS'} || 0;
+my $skip_branches  = $ENV{'SKIP_BRANCHES'} || 0;
+
+my $color_reset="\\[\x1b[0m\\]";
+my $color_stale="\\[\x1b[38;5;1m\\]";
+my $color_branch="\\[\x1b[38;5;208m\\]";
+my $color_stashed="\\[\x1b[38;5;190m\\]";
+my $proj = undef;
+my $stashed = 0;
+my $prefix = '';
+my $suffix = '';
+my $translate_map = {
+  #; '*' => '💥 ',
+  #; '%' => '✨ ',
+  #; '|' => '🌿 ',
+};
+
+our $remote_heads = '';
+
+my $path = $ENV{'PWD'};
+my $home = $ENV{'HOME'};
+
+my $std_git_prompt = '/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh';
+
+my $git = '';
+
+if ( -f $std_git_prompt ) {
+  my $generate_git_prompt = "bash -c '";
+  $generate_git_prompt .= "source $std_git_prompt ; ";
+  $generate_git_prompt .= "GIT_PS1_SHOWDIRTYSTATE=1 ; ";
+  $generate_git_prompt .= "GIT_PS1_SHOWSTASHSTATE=1 ; ";
+  $generate_git_prompt .= "GIT_PS1_SHOWUNTRACKEDFILES=1 ; ";
+  $generate_git_prompt .= "GIT_PS1_SHOWUPSTREAM=\"auto\" ; ";
+  $generate_git_prompt .= "__git_ps1 \"\%s\" ";
+  $generate_git_prompt .= "'";
+  $git = `$generate_git_prompt`;
+  #; foreach my $char (keys (%$translate_map)) {
+  #;   my $replace = $translate_map->{$char};
+  #;   $char = quotemeta $char;
+  #;   $git =~ s/$char/${replace}/;
+  #; }
+}
+
+#; emulate \w
+$path =~ s/^${home}/\~/;
+
+#; format any home proj subdirs
+if ( $path =~ s/\~\/proj\/([^\/]+)// ) {
+  $proj = $1;
+
+  #; strip off project directory
+  $path =~ s/^\///;
+
+  #; wrap the prompt in []
+  $prefix = '[';
+  $suffix = "]";
+
+}
+
+#: replace the user with the project name (if we're in a project)
+my $user = $proj ? $proj : '\\u';
+
+#; by default show the hostname
+my $host_info = '@\\h';
+
+if ($git) {
+  my $git_color = $color_reset;
+  my $branch_name = 'master';
+  if ($git =~ m/^master/) {
+    if ($git =~ m/\</) {
+      $git_color = $color_stale;
+    }
+
+    if (!$skip_branches) {
+      my $branch_count = 1;
+      chomp($branch_count = `git branch 2>/dev/null | wc -l`);
+      if ($branch_count > 1) {
+        $git .= '|';
+      }
+    }
+  }
+  else {
+    $git_color = $color_branch;
+    chomp($branch_name = `git rev-parse --abbrev-ref HEAD 2>/dev/null`);
+
+    if (!$skip_branches) {
+      my $branch_count = 1;
+      chomp($branch_count = `git branch 2>/dev/null | wc -l`);
+      if ($branch_count > 2) {
+        $git .= '|';
+      }
+    }
+  }
+
+  foreach my $char (keys (%$translate_map)) {
+    my $replace = $translate_map->{$char};
+    $char = quotemeta $char;
+    $git =~ s/$char/${replace}/;
+  }
+
+  $git = $git_color . $git . $color_reset;
+
+  if ($process_status) {
+    chomp(my $git_dir = `git rev-parse --git-dir 2>/dev/null`);
+    if (-d $git_dir) {
+
+      #; read previously written remote_heads
+      $remote_heads = read_file( "$git_dir/.myprompt.heads", err_mode => 'quiet' );
+
+      my $behind_master = '';
+      my $behind_branch = '';
+      if (behind_origin('master')) {
+        $behind_master = 'm';
+      }
+      if ($branch_name ne 'master' && behind_origin($branch_name)) {
+        $behind_branch = 'b';
+      }
+      if ($behind_master || $behind_branch) {
+        $git = $color_stale . '<' . $behind_master . $behind_branch . $color_reset . '-' . $git;
+      }
+
+      #; fire-off an async update of our remote heads
+      async_ref_update($git_dir);
+    }
+  }
+  if ($proj) {
+    $host_info = "/$git";
+  }
+  else {
+    $host_info .= "($git)";
+  }
+}
+
+#; root gets a '#'
+my $symbol = $> ? '$' : '#';
+
+#; put it all together
+print "${color_reset}${prefix}${user}${host_info}${suffix} ${path}${symbol} \n";
+
+sub behind_origin {
+  my ($branch) = @_;
+
+  #; parse the HEAD of origin/branch
+  my $remote_head;
+  foreach my $line (split("\n",$remote_heads)) {
+    if ($line =~ m/^(\S+)\s+refs\/heads\/${branch}/) {
+      $remote_head = $1;
+    }
+  }
+  return 0 unless $remote_head;
+
+  #; test if we have this reference in our local repository
+  system("git show $remote_head >/dev/null 2>&1");
+
+  return ($? >> 8 != 0)
+}
+
+sub async_ref_update {
+  my ($git_dir) = @_;
+  my $pid = fork;
+  if (defined($pid)) {
+    if (!$pid) {
+      #; child
+
+      #; separate this process from it's parent
+      setsid();
+      close(STDOUT); close (STDIN); close (STDERR);
+
+
+      #; obtain lockfile (or bail out)
+      my $lock_file    = "$git_dir/.myprompt.lock";
+      my $remote_heads = "$git_dir/.myprompt.heads";
+      my $lock_handle;
+      if (open($lock_handle,">$lock_file")) {
+        if (flock( $lock_handle, LOCK_EX | LOCK_NB )) {
+          #; fetch remote heads
+          system("git ls-remote -h origin > $remote_heads.tmp 2>/dev/null");
+          move("$remote_heads.tmp",$remote_heads);
+        }
+      }
+      exit;
+    }
+  }
+
+}
