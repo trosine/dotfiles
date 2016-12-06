@@ -7,11 +7,17 @@ fi
 
 # User specific environment and startup programs
 
-#source /etc/bash_completion.d/git
+# Bash command completion configuration
+# Mac (homebrew)
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
+for name in docker docker-compose; do
+  . $HOME/bin/completion/$name
+done
+
+# vi-bindings at bash prompt
 set -o vi
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
