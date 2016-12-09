@@ -45,6 +45,7 @@ if empty(glob("~/.vim/autoload/plug.vim"))
 endif
 
 call plug#begin()
+  Plug 'ekalinin/Dockerfile.vim'
   Plug 'junegunn/vim-easy-align'
   Plug 'rodjek/vim-puppet'
   Plug 'thelocehiliosan/vim-json'
