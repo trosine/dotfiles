@@ -8,6 +8,9 @@ autocmd FileType aspperl set noexpandtab
 au FileType perl setlocal iskeyword-=:
 au FileType puppet setlocal iskeyword-=:
 
+" python specific settings
+au FileType python set tabstop=4 shiftwidth=4
+
 " comScore perl CGI scripts
 au BufNewFile,BufRead *.pli setf perl
 
