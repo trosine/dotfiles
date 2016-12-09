@@ -37,6 +37,13 @@ nmap ga <Plug>(EasyAlign)
 " quick fold toggling
 nnoremap <tab> za
 
+
+" download vim-plug if missing
+if empty(glob("~/.vim/autoload/plug.vim"))
+  silent! execute '!curl --create-dirs -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * silent! PlugInstall
+endif
+
 call plug#begin()
   Plug 'junegunn/vim-easy-align'
   Plug 'rodjek/vim-puppet'
