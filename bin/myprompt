@@ -6,7 +6,7 @@
 use strict;
 use Fcntl ':flock';
 use File::Copy;
-use File::Slurp;
+# use File::Slurp;
 use POSIX qw(setsid);
 
 my $process_status = $ENV{'REMOTE_STATUS'} || 0;
@@ -32,6 +32,7 @@ my $path = $ENV{'PWD'};
 my $home = $ENV{'HOME'};
 
 my $std_git_prompt = '/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh';
+# '/usr/share/git-core/contrib/completion/git-prompt.sh'
 
 my $git = '';
 
@@ -140,6 +141,14 @@ if ($git) {
   else {
     $host_info .= "($git)";
   }
+}
+
+sub read_file {
+  my ($file) = @_;
+  open(RFH, $file) or return;
+  local $/ = undef;
+  my $content = <>;
+  print STDERR "Contents of $file:\n$content";
 }
 
 #; root gets a '#'
