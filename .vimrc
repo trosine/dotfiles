@@ -3,6 +3,14 @@ set shiftwidth=2
 set expandtab
 set shiftround
 set ai
+
+" change location of temporary files
+call system('mkdir -p ~/.vim/_files/{backup,swap,undo}')
+set backupdir=~/.vim/_files/backup//
+set directory=~/.vim/_files/swap//
+set undodir=~/.vim/_files/undo//
+
+
 autocmd FileType make set noexpandtab
 autocmd FileType aspperl set noexpandtab
 au FileType perl setlocal iskeyword-=:
