@@ -31,8 +31,18 @@ our $remote_heads = '';
 my $path = $ENV{'PWD'};
 my $home = $ENV{'HOME'};
 
-my $std_git_prompt = '/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh';
-# '/usr/share/git-core/contrib/completion/git-prompt.sh'
+my $std_git_prompt = '';
+my @prompt_locations = (
+  '/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh',
+  '/usr/share/git-core/contrib/completion/git-prompt.sh',
+);
+
+foreach my $std_prompt (@prompt_locations) {
+  if (-f $std_prompt) {
+    $std_git_prompt = $std_prompt;
+    last;
+  }
+}
 
 my $git = '';
 
