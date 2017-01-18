@@ -147,8 +147,8 @@ sub read_file {
   my ($file) = @_;
   open(RFH, $file) or return;
   local $/ = undef;
-  my $content = <>;
-  print STDERR "Contents of $file:\n$content";
+  my $content = <RFH>;
+  close(RFH);
 }
 
 #; root gets a '#'
