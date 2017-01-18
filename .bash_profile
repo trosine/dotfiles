@@ -9,8 +9,10 @@ fi
 
 # Bash command completion configuration
 # Mac (homebrew)
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
+if [ -x /usr/local/bin/brew ]; then
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
 fi
 
 for name in docker docker-compose; do
