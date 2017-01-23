@@ -22,10 +22,22 @@ done
 # vi-bindings at bash prompt
 set -o vi
 
-# Prompt
-export REMOTE_STATUS=1
-export PROMPT_COMMAND='PS1=$($HOME/bin/myprompt)'
+# -- NEW PROMPT
+if [ -f ~/.bash-git-prompt/gitprompt.sh ]
+then
+  # keep hostname "short but meaningful"
+  # if a proper fqdn, strip off the last 2 domain pieces (domain.tld)
+  export GIT_CUSTOM_HOST=$(echo $HOSTNAME | sed -e '/\..*\./!s/\..*//' -e '/\..*\./s/\.[^.]*\.[^.]*$//' )
+  export GIT_PROMPT_ONLY_IN_REPO=0
+  export GIT_PROMPT_THEME=Custom
+  source ~/.bash-git-prompt/gitprompt.sh
+else
+  export PS1="\u@\h \w\$ "
+fi
 
+# -- OLD PROMPT
+# export REMOTE_STATUS=1
+# export PROMPT_COMMAND='PS1=$($HOME/bin/myprompt)'
 # Git prompt specific settings
 # export GIT_PS1_SHOWDIRTYSTATE=1
 # export GIT_PS1_SHOWSTASHSTATE=1
