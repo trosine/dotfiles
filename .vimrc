@@ -10,6 +10,11 @@ set backupdir=~/.vim/_files/backup//
 set directory=~/.vim/_files/swap//
 set undodir=~/.vim/_files/undo//
 
+" reset cursor position when entering buffer
+autocmd BufReadPost *
+  \ if line("'\"") <= line("$") |
+  \   execute "normal! g`\"" |
+  \ endif
 
 autocmd FileType make set noexpandtab
 autocmd FileType aspperl set noexpandtab
