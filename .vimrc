@@ -54,15 +54,15 @@ endif
 
 call plug#begin()
   Plug 'ekalinin/Dockerfile.vim'
+  Plug 'godlygeek/tabular'
   Plug 'junegunn/vim-easy-align'
   Plug 'rodjek/vim-puppet'
   Plug 'thelocehiliosan/vim-json'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
-  Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-unimpaired'
   Plug 'vim-scripts/headers.vim'
-  Plug 'godlygeek/tabular'
 
   if v:version >= 703        
     Plug 'jamessan/vim-gnupg'
