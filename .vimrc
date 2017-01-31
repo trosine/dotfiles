@@ -50,6 +50,13 @@ nmap ga <Plug>(EasyAlign)
 " quick fold toggling
 nnoremap <tab> za
 
+" indent-guides options
+colorscheme default
+let g:indent_guides_enable_on_vim_startup=1
+" let g:indent_guides_color_change_percent=10
+let g:indent_guides_auto_colors=0
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
 
 " download vim-plug if missing
 if empty(glob("~/.vim/autoload/plug.vim"))
@@ -60,7 +67,9 @@ endif
 call plug#begin()
   Plug 'ekalinin/Dockerfile.vim'
   Plug 'godlygeek/tabular'
+  Plug 'guns/xterm-color-table.vim'
   Plug 'junegunn/vim-easy-align'
+  Plug 'nathanaelkane/vim-indent-guides'
   Plug 'rodjek/vim-puppet'
   Plug 'thelocehiliosan/vim-json'
   Plug 'tpope/vim-commentary'
