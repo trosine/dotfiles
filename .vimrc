@@ -43,10 +43,6 @@ vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" highlight trailing whitespace
-"highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-"match ExtraWhitespace /\s\+$/
-
 " quick fold toggling
 nnoremap <tab> za
 
@@ -78,7 +74,21 @@ call plug#begin()
   Plug 'tpope/vim-unimpaired'
   Plug 'vim-scripts/headers.vim'
 
-  if v:version >= 703        
+  if v:version >= 703
     Plug 'jamessan/vim-gnupg'
   endif
 call plug#end()
+
+" highlight trailing whitespace
+" drawbacks: doesn't work if syn=vim and is annoying while typing
+" highlight ExtraWhitespace ctermbg=red guibg=red
+" autocmd Syntax * syn match ExtraWhitespace /\s\+$/
+
+" highlight trailing whitespace except at the current editing cursor
+" for some reason this only seems to work at very end of the vimrc
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
