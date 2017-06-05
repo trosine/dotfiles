@@ -20,5 +20,7 @@
 	ga = log --graph --all
 	lg = log --graph
 	st = status -sb
+	pp = !git branch | tr /- _
+	ppr = !git branch -r | sed -e 's|origin/||' | tr /- _
 [push]
 	default = simple
