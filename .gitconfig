@@ -22,5 +22,8 @@
 	st = status -sb
 	pp = !git branch | tr /- _
 	ppr = !git branch -r | sed -e 's|origin/||' | tr /- _
+  # remove local banches that have been merged - leaving current branch and master
+	lbprune = !git branch --merged | grep -ve '^\\*' -e '^  master$' | xargs --no-run-if-empty git branch -d
+	myprune = "!git branch --merged | grep -ve '^\\*' -e '^  master$' | xargs --no-run-if-empty git branch -d; git fetch --prune"
 [push]
 	default = simple
