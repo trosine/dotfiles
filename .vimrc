@@ -63,7 +63,6 @@ endif
 
 call plug#begin()
   Plug 'ekalinin/Dockerfile.vim'
-  Plug 'godlygeek/tabular'
   Plug 'guns/xterm-color-table.vim'
   Plug 'junegunn/vim-easy-align'
   Plug 'nathanaelkane/vim-indent-guides'
