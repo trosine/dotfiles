@@ -2,7 +2,7 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 set shiftround
-set ai
+set autoindent
 
 " change location of temporary files
 call system('mkdir -p ~/.vim/_files/{backup,swap,undo}')
@@ -18,21 +18,21 @@ autocmd BufReadPost *
 
 autocmd FileType make set noexpandtab
 autocmd FileType aspperl set noexpandtab
-au FileType perl setlocal iskeyword-=:
-au FileType puppet setlocal iskeyword-=:
+autocmd FileType perl setlocal iskeyword-=:
+autocmd FileType puppet setlocal iskeyword-=:
 
 " python specific settings
-au FileType python set tabstop=4 shiftwidth=4
+autocmd FileType python set tabstop=4 shiftwidth=4
 
 " comScore perl CGI scripts
-au BufNewFile,BufRead *.pli setf perl
+autocmd BufNewFile,BufRead *.pli setf perl
 
 " diffs during git commits
 map <Leader>gg :silent new diff.staged \| :set filetype=git-diff \| :r! git diff --cached -p --stat<CR>:se ro<CR>:set nospell \| :goto 1<CR>
 map <Leader>gG :silent new diff.unstaged \| :set filetype=git-diff \| :r! git diff -p --stat<CR>:se ro<CR>:set nospell \| :goto 1<CR>
 
 " disable comment continuations (see fo-table)
-au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " vim-json plugin options:
 let g:vim_json_comments = 1
