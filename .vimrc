@@ -36,6 +36,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " vim-json plugin options:
 let g:vim_json_comments = 1
+let g:vim_json_syntax_conceal = 0
 
 " vim-easy-align options:
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
