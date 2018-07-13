@@ -25,9 +25,6 @@ set -o vi
 # -- NEW PROMPT
 if [ -f ~/.bash-git-prompt/gitprompt.sh ]
 then
-  # keep hostname "short but meaningful"
-  # if a proper fqdn, strip off the last 2 domain pieces (domain.tld)
-  export GIT_CUSTOM_HOST=$(echo $HOSTNAME | sed -e '/\..*\./!s/\..*//' -e '/\..*\./s/\.[^.]*\.[^.]*$//' )
   export GIT_PROMPT_ONLY_IN_REPO=0
   export GIT_PROMPT_THEME=Custom
   source ~/.bash-git-prompt/gitprompt.sh
