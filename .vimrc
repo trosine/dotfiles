@@ -77,6 +77,9 @@ call plug#begin()
   if v:version >= 703
     Plug 'jamessan/vim-gnupg'
   endif
+  if v:version >= 800
+    Plug 'w0rp/ale'
+  endif
 call plug#end()
 
 " highlight trailing whitespace
