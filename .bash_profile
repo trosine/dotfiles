@@ -33,7 +33,7 @@ else
 fi
 
 export GREP_OPTIONS='--exclude-dir=.svn'
-export PATH=$PATH:~/bin:.
+export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH:~/bin:."
 export ENSCRIPT='-U2 -T3 -E'
 export EDITOR=vim
 export PAGER=less
