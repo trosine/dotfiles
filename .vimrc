@@ -25,6 +25,9 @@ autocmd FileType puppet setlocal iskeyword-=:
 " python specific settings
 autocmd FileType python set tabstop=4 shiftwidth=4
 
+" javascript settings
+autocmd FileType javascript set tabstop=4 shiftwidth=4
+
 " comScore perl CGI scripts
 autocmd BufNewFile,BufRead *.pli setf perl
 
