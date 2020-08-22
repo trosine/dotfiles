@@ -75,6 +75,7 @@ call plug#begin()
   Plug 'nathanaelkane/vim-indent-guides'
   Plug 'rodjek/vim-puppet'
   Plug 'thelocehiliosan/vim-json'
+  Plug 'tmhedberg/SimpylFold'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-surround'
