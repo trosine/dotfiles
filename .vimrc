@@ -69,6 +69,7 @@ call plug#begin()
   Plug 'ekalinin/Dockerfile.vim'
   Plug 'guns/xterm-color-table.vim'
   Plug 'junegunn/vim-easy-align'
+  Plug 'lepture/vim-jinja'
   Plug 'nathanaelkane/vim-indent-guides'
   Plug 'rodjek/vim-puppet'
   Plug 'thelocehiliosan/vim-json'
