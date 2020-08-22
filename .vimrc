@@ -3,6 +3,7 @@ set shiftwidth=2
 set expandtab
 set shiftround
 set autoindent
+set hlsearch
 
 " change location of temporary files
 call system('mkdir -p ~/.vim/_files/{backup,swap,undo}')
