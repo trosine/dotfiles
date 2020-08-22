@@ -21,6 +21,8 @@ autocmd FileType make set noexpandtab
 autocmd FileType aspperl set noexpandtab
 autocmd FileType perl setlocal iskeyword-=:
 autocmd FileType puppet setlocal iskeyword-=:
+" autocmd FileType kerboscript setlocal commentstring=//\ %s
+" autocmd FileType kerboscript syntax case ignore
 
 " python specific settings
 autocmd FileType python set tabstop=4 shiftwidth=4
@@ -78,6 +80,7 @@ call plug#begin()
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-unimpaired'
   Plug 'vim-scripts/headers.vim'
+  Plug 'yump/vim-kerboscript'
 
   if v:version >= 703
     Plug 'jamessan/vim-gnupg'
