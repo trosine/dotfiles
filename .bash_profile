@@ -32,6 +32,9 @@ else
   export PS1="\u@\h \w\$ "
 fi
 
+# for MacOS > Catalina:
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 export GREP_OPTIONS='--exclude-dir=.svn'
 export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH:~/bin:."
 export ENSCRIPT='-U2 -T3 -E'
