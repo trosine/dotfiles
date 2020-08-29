@@ -36,7 +36,7 @@ fi
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
 export GREP_OPTIONS='--exclude-dir=.svn'
-export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH:~/bin:."
+export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH:$HOME/bin:."
 export ENSCRIPT='-U2 -T3 -E'
 export EDITOR=vim
 export PAGER=less
