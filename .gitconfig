@@ -1,8 +1,5 @@
 [color]
 	ui = true
-[user]
-	name = Tim Rosine
-	email = trosine@conversantmedia.com
 [core]
   excludesfile = /home/trosine/.gitignore_global
 [log]
@@ -27,3 +24,5 @@
 	myprune = "!git branch --merged | grep -ve '^\\*' -e '^  master$' | xargs --no-run-if-empty git branch -d; git fetch --prune"
 [push]
 	default = current
+[include]
+  path = .gitconfig.local
